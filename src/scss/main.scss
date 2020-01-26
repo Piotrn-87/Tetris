@@ -1,7 +1,6 @@
 @import "_normalize";
 @import "_variables";
 
-
 html {
   box-sizing: border-box;
   background: radial-gradient($blue, $violet);
@@ -16,4 +15,8 @@ html {
 
 body {
   color: $green;
+}
+
+.text {
+  text-align: center;
 }
