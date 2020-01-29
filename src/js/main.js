@@ -131,7 +131,6 @@ function handleKeyPress(key) {
     DrawTetromino();
   }
 }
-
 function DeleteTetramino() {
   for (let i = 0; i < currentTetramino.length; i++) {
     let x = currentTetramino[i][0] + startX;
