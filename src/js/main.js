@@ -37,12 +37,29 @@ let currentTetramino = [
 ];
 
 let tetrominos = [];
-let tetrominosColors = ["violet", "cyan", "blue", "green", "red"];
-let currentTetrominoColor;
+let tetrominosColors = [
+  "violet",
+  "cyan",
+  "blue",
+  "green",
+  "red",
+  "orange",
+  "yellow"
+];
+let currentTetrominoColor = "green";
 
 let gameBoardArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
 );
+
+let DIRECTION = {
+  IDEL: 0,
+  DOWN: 0,
+  LEFT: 2,
+  RIGHT: 3
+};
+
+let direction;
 
 class Coordinates {
   constructor(x, y) {
@@ -78,6 +95,10 @@ function SetupCanvas() {
   ctx.strokeStyle = "black";
   ctx.strokeRect(8, 8, 280, 462);
 
+  document.addEventListener("keydown", handleKeyPress);
+
+  createTetramino();
+
   CreateCoordArray();
   DrawTetromino();
 }
@@ -86,5 +107,39 @@ function DrawTetromino() {
   for (let i = 0; i < currentTetramino.length; i++) {
     let x = currentTetramino[i][0] + startX;
     let y = currentTetramino[i][1] + startY;
+    gameBoardArray[x][y] = 1;
+    let coorX = (coorX = coordinateArray[x][y].x);
+    let coorY = (coorY = coordinateArray[x][y].y);
+    ctx.fillStyle = currentTetraminoColor;
+    ctx.fillRect(coorX, coorY, 21, 21);
+  }
+}
+
+function handleKeyPress(key) {
+  if (key.keyCode === 65) {
+    direction = DIRECTION.LEFT;
+    DeleteTetramino();
+    startX--;
+    DrawTetromino();
+  } else if (key.keyCode === 68) {
+    direction = DIRECTION.RIGHT;
+    startX++;
+    DrawTetromino();
+  } else if (key.keyCode === 83) {
+    direction = DIRECTION.DOWN;
+    startY++;
+    DrawTetromino();
+  }
+}
+
+function DeleteTetramino() {
+  for (let i = 0; i < currentTetramino.length; i++) {
+    let x = currentTetramino[i][0] + startX;
+    let y = currentTetramino[(1)[1]] + startY;
+    gameBoardArrayHeight[x][y] = 0;
+    let coorX = coordinateArray[x][y].x;
+    let coorY = coordinateArray[x][y].y;
+    ctx.fillStyle = "white";
+    ctx.fillRect(coorX, coorY, 21, 21);
   }
 }
