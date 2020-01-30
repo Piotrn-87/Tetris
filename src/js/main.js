@@ -97,7 +97,7 @@ function SetupCanvas() {
 
   document.addEventListener("keydown", handleKeyPress);
 
-  createTetramino();
+  CreateTetramino();
 
   CreateCoordArray();
   DrawTetromino();
@@ -141,4 +141,55 @@ function DeleteTetramino() {
     ctx.fillStyle = "white";
     ctx.fillRect(coorX, coorY, 21, 21);
   }
+}
+
+function CreateTetramino() {
+  tetrominos.push([
+    [1, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1]
+  ]);
+  tetraminos.push([
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [3, 0]
+  ]);
+  tetraminos.push([
+    [0, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1]
+  ]);
+  tetraminos.push([
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [1, 1]
+  ]);
+  tetraminos.push([
+    [2, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1]
+  ]);
+  tetraminos.push([
+    [1, 0],
+    [2, 0],
+    [0, 1],
+    [1, 1]
+  ]);
+  tetraminos.push([
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [2, 1]
+  ]);
+}
+
+function CreateTetramino() {
+  let randomTetramino = Math.floor(Math.random() * tetraminos.length);
+  currentTetramino = tetraminos[randomTetramino];
+  currentTetrominoColor = currentTetraminoColor[randomTetramino];
 }
