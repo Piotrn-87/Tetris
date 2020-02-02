@@ -26,10 +26,15 @@ let gameBoardArrayHeight = 20;
 let gameBoardArrayWidth = 12;
 let startX = 4;
 let startY = 0;
+let score = 0;
+let level = 1;
+let winOrLose = "Playing";
+let tetrisLogo;
 
 let coordinateArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
 );
+
 let currentTetromino = [
   [1, 0],
   [0, 1],
@@ -49,6 +54,9 @@ let shapesColors = [
 ];
 let currentTetrominoColor;
 let gameBoardArray = [...Array(20)].map(e => Array(12).fill(0));
+let stoppedShapeArray = [...Array(gameBoardArrayHeight)].map(e =>
+  Array(gameBoardArrayWidth).fill(0)
+);
 
 let DIRECTION = {
   IDEL: 0,
@@ -70,8 +78,8 @@ document.addEventListener("DOMContentLoaded", SetupCanvas);
 function CreateCoordArray() {
   let i = 0,
     j = 0;
-  for (let y = 10; y <= 546; y += 12) {
-    for (let x = 20; x <= 240; x += 12) {
+  for (let y = 4; y <= 446; y += 22) {
+    for (let x = 4; x <= 338; x += 22) {
       coordinateArray[i][j] = new Coordinates(x, y);
       i++;
     }
@@ -82,16 +90,20 @@ function CreateCoordArray() {
 function SetupCanvas() {
   canvas = document.getElementById("canvas");
   ctx = canvas.getContext("2d");
-  canvas.width = 530;
+  canvas.width = 358;
   canvas.height = 556;
 
   // ctx.scale(2, 2);
 
   ctx.fillStyle = "white";
-  ctx.fillRect(6, 6, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.strokeStyle = "black";
-  ctx.strokeRect(4, 8, 520, 552);
+  // ctx.strokeStyle = "black";
+  // ctx.strokeRect(8, 8, 336, 542);
+
+  // tetrisLogo = new Image(160, 50);
+  // tetrisLogo.onload = DrawTetrisLogo;
+  // tetrisLogo.src = "../assets/pwa/icons/tetris.png";
 
   document.addEventListener("keydown", handleKeyPress);
 
@@ -109,7 +121,7 @@ function DrawTetromino() {
     let coorX = coordinateArray[x][y].x;
     let coorY = coordinateArray[x][y].y;
     ctx.fillStyle = currentTetrominoColor;
-    ctx.fillRect(coorX, coorY, 10, 10);
+    ctx.fillRect(coorX, coorY, 20, 20);
     console.log("COLOR", currentTetrominoColor);
   }
 }
@@ -213,7 +225,7 @@ function HittingTheWall() {
     let newX = currentTetromino[i][0] + startX;
     if (newX <= 0 && direction === DIRECTION.LEFT) {
       return true;
-    } else if (newX >= 20 && direction === DIRECTION.RIGHT) {
+    } else if (newX >= 15 && direction === DIRECTION.RIGHT) {
       return true;
     }
   }
