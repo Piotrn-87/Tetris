@@ -3,7 +3,6 @@
 
 html {
   box-sizing: border-box;
-  background: radial-gradient($blue, $violet);
   height: 100%;
 }
 
@@ -14,6 +13,7 @@ html {
 }
 
 body {
+  background: radial-gradient($blue, $violet);
   color: $green;
   display: flex;
   flex-direction: column;
@@ -25,6 +25,8 @@ body {
   text-align: center;
 }
 
-#canvas {
+.canvas {
   margin: auto;
+  background: radial-gradient($blue, $violet);
+  background-color: yellow;
 }

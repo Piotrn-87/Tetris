@@ -79,7 +79,7 @@ function CreateCoordArray() {
   let i = 0,
     j = 0;
   for (let y = 4; y <= 446; y += 22) {
-    for (let x = 4; x <= 338; x += 22) {
+    for (let x = 4; x <= 438; x += 22) {
       coordinateArray[i][j] = new Coordinates(x, y);
       i++;
     }
@@ -88,22 +88,35 @@ function CreateCoordArray() {
   }
 }
 function SetupCanvas() {
-  canvas = document.getElementById("canvas");
+  // canvas = document.getElementById("canvas");
+  canvas = document.querySelector(".canvas");
   ctx = canvas.getContext("2d");
-  canvas.width = 358;
+  canvas.width = 382;
   canvas.height = 556;
 
   // ctx.scale(2, 2);
 
-  ctx.fillStyle = "white";
+  ctx.fillStyle = "grey";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // ctx.strokeStyle = "black";
-  // ctx.strokeRect(8, 8, 336, 542);
+  ctx.strokeStyle = "black";
+  ctx.strokeRect(8, 8, 336, 542);
 
-  // tetrisLogo = new Image(160, 50);
+  tetrisLogo = new Image(160, 50);
   // tetrisLogo.onload = DrawTetrisLogo;
-  // tetrisLogo.src = "../assets/pwa/icons/tetris.png";
+  tetrisLogo.src = "../assets/pwa/icons/tetris.png";
+
+  ctx.fillStyle = "green";
+  ctx.font = "2rem Arial";
+
+  ctx.fillText("Score", 300, 98);
+  ctx.strokeRect(150, 100, 161, 24);
+
+  ctx.fillText("Level", 250, 198);
+  ctx.strokeRect(180, 171, 161, 32);
+
+  ctx.fillText("Win / Lose", 200, 241);
+  ctx.strokeRect(250, 282, 141, 85);
 
   document.addEventListener("keydown", handleKeyPress);
 
@@ -225,7 +238,7 @@ function HittingTheWall() {
     let newX = currentTetromino[i][0] + startX;
     if (newX <= 0 && direction === DIRECTION.LEFT) {
       return true;
-    } else if (newX >= 15 && direction === DIRECTION.RIGHT) {
+    } else if (newX >= 14 && direction === DIRECTION.RIGHT) {
       return true;
     }
   }
