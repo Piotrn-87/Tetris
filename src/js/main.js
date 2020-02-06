@@ -104,7 +104,7 @@ function SetupCanvas() {
 
   tetrisLogo = new Image(160, 50);
   // tetrisLogo.onload = DrawTetrisLogo;
-  tetrisLogo.src = "../assets/pwa/icons/tetris.png";
+  tetrisLogo.src = "../assets/img/tetris-logo.jpg";
 
   ctx.fillStyle = "green";
   ctx.font = "1.5rem Arial";
