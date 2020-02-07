@@ -341,10 +341,6 @@ body {
   text-align: center; }
 
 .canvas {
-  margin: auto;
-  background: -webkit-radial-gradient(#246, #002);
-  background: -o-radial-gradient(#246, #002);
-  background: radial-gradient(#246, #002);
-  background-color: yellow; }
+  margin: auto; }
 
 /*# sourceMappingURL=main.css.map */
