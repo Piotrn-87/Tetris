@@ -280,3 +280,50 @@ function HittingTheWall() {
   }
   return false;
 }
+
+function VerticalCollision() {
+  let copyTetromino = currentTetromino;
+  let collision = false;
+  for (let i = 0; i < copyTetromino.length; i++) {
+    let square = copyTetromino[i];
+    let x = square[0] + startX;
+    let y = square[1] + startY;
+    if (direction === DIRECTION.DOWN) {
+      y++;
+    }
+    if (gameBoardArray[x[y + 1] === 1]) {
+      if (typeof shapeArray[x][y + 1] === "string") {
+        DeleteTetromino();
+        startY++;
+        DrawTetromino();
+        collision = true;
+        break;
+      }
+      if (y >= 10) {
+        collision = true;
+        break;
+      }
+    }
+    if (collision) {
+      if (startY <= 2) {
+        winOrLose = "Game Over";
+        ctx.fillStyle = "White";
+        ctx.fillStyle = "black";
+        ctx.fillText(winOrLose, 310, 300);
+      } else {
+        for (let i = 0; i < copyTetromino.length; i++) {
+          let square = copyTetromino[i];
+          let x = square[0] + startX;
+          let Y = square[1] + startY;
+          stoppedShapeArray[x][y] = currentTetrominoColor;
+        }
+        CheckForCompletedRows();
+        CreateTetromino();
+        direction = DIRECTION.IDLE;
+        startX = 7;
+        startY = 0;
+        DrawTetromino();
+      }
+    }
+  }
+}
