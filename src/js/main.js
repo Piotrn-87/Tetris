@@ -309,7 +309,7 @@ function VerticalCollision() {
         winOrLose = "Game Over";
         ctx.fillStyle = "White";
         ctx.fillStyle = "black";
-        ctx.fillText(winOrLose, 310, 300);
+        ctx.fillText(winOrLose, 310, 100);
       } else {
         for (let i = 0; i < copyTetromino.length; i++) {
           let square = copyTetromino[i];
