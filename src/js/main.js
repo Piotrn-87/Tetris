@@ -79,7 +79,7 @@ function CreateCoordArray() {
   let i = 0,
     j = 0;
   for (let y = 4; y <= 462; y += 22) {
-    for (let x = 140; x <= 472; x += 22) {
+    for (let x = 140; x <= 484; x += 22) {
       coordinateArray[i][j] = new Coordinates(x, y);
       i++;
     }
@@ -88,7 +88,6 @@ function CreateCoordArray() {
   }
 }
 function SetupCanvas() {
-  // canvas = document.getElementById("canvas");
   canvas = document.querySelector(".canvas");
   ctx = canvas.getContext("2d");
   canvas.width = 640;
@@ -96,27 +95,35 @@ function SetupCanvas() {
 
   // ctx.scale(2, 2);
 
-  ctx.fillStyle = "cornsilk";
+  ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.strokeStyle = "black";
   ctx.strokeRect(138, 2, 354, 542);
 
   tetrisLogo = new Image(160, 50);
-  // tetrisLogo.onload = DrawTetrisLogo;
-  tetrisLogo.src = "../assets/img/tetris-logo.jpg";
+  tetrisLogo.onload = DrawTetrisLogo;
+  tetrisLogo.class = "logo";
+  tetrisLogo.src = "../assets/img/indeks.jpg";
 
   ctx.fillStyle = "green";
-  ctx.font = "1.5rem Arial";
+  ctx.font = "1.3rem Arial";
 
-  ctx.fillText("Score", 510, 100);
+  ctx.fillText("Score", 500, 100);
   // ctx.strokeRect(150, 100, 161, 24);
 
-  ctx.fillText("Level", 510, 150);
+  ctx.fillText("Level", 500, 150);
   // ctx.strokeRect(180, 171, 161, 32);
 
-  ctx.fillText("Win / Lose", 510, 200);
+  ctx.fillText("Win / Lose", 500, 200);
   // ctx.strokeRect(250, 282, 141, 85);
+
+  ctx.fillText("CONTROLS", 500, 320);
+
+  ctx.fillText("A: Move left", 500, 350);
+  ctx.fillText("D: Move right", 500, 380);
+  ctx.fillText("S: Move down", 500, 410);
+  ctx.fillText("Space: rotate", 500, 440);
 
   document.addEventListener("keydown", handleKeyPress);
 
@@ -124,6 +131,13 @@ function SetupCanvas() {
   CreateTetromino();
   CreateCoordArray();
   DrawTetromino();
+}
+
+function DrawTetrisLogo() {
+  ctx.drawImage(tetrisLogo, 0, 50, 130, 70);
+  ctx.drawImage(tetrisLogo, 0, 100, 130, 70);
+  ctx.drawImage(tetrisLogo, 0, 150, 130, 70);
+  ctx.drawImage(tetrisLogo, 0, 200, 130, 70);
 }
 
 function DrawTetromino() {
@@ -143,24 +157,46 @@ function handleKeyPress(key) {
   if (key.keyCode === 65) {
     direction = DIRECTION.LEFT;
     if (!HittingTheWall()) {
-      DeleteTetromino();
-      startX--;
-      DrawTetromino();
+      MoveLeft();
     }
   } else if (key.keyCode === 68) {
     direction = DIRECTION.RIGHT;
     if (!HittingTheWall()) {
-      DeleteTetromino();
-      startX++;
-      DrawTetromino();
+      MoveRight();
     }
   } else if (key.keyCode === 83) {
-    direction = DIRECTION.DOWN;
-    DeleteTetromino();
-    startY++;
-    DrawTetromino();
+    MoveDown();
+  } else if (key.keyCode === 87) {
+    MoveUp();
   }
 }
+
+function MoveUp() {
+  DeleteTetromino();
+  startY--;
+  DrawTetromino();
+}
+
+function MoveLeft() {
+  DeleteTetromino();
+  startX--;
+  DrawTetromino();
+}
+
+function MoveRight() {
+  direction = DIRECTION.RIGHT;
+  DeleteTetromino();
+  startX++;
+  DrawTetromino();
+}
+
+function MoveDown() {
+  direction = DIRECTION.DOWN;
+  DeleteTetromino();
+  startY++;
+  DrawTetromino();
+}
+
 function DeleteTetromino() {
   for (let i = 0; i < currentTetromino.length; i++) {
     let x = currentTetromino[i][0] + startX;
@@ -168,7 +204,7 @@ function DeleteTetromino() {
     gameBoardArray[x][y] = 0;
     let coorX = coordinateArray[x][y].x;
     let coorY = coordinateArray[x][y].y;
-    ctx.fillStyle = "cornsilk";
+    ctx.fillStyle = "white";
     ctx.fillRect(coorX, coorY, 20, 20);
   }
 }

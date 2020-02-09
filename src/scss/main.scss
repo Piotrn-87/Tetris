@@ -30,3 +30,15 @@ body {
   // background: radial-gradient($blue, $violet);
   // background-color: yellow;
 }
+
+.logo {
+  width: 200px;
+  height: 100px;
+  background-color: green;
+  color: red;
+  background: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+}
