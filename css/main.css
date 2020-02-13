@@ -343,4 +343,15 @@ body {
 .canvas {
   margin: auto; }
 
+.logo {
+  width: 200px;
+  height: 100px;
+  background-color: green;
+  color: red;
+  background: red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%; }
+
 /*# sourceMappingURL=main.css.map */
