@@ -22,7 +22,7 @@ console.log(`Hello Tetromino!`);
 
 let canvas;
 let ctx;
-let gameBoardArrayHeight = 20;
+let gameBoardArrayHeight = 16;
 let gameBoardArrayWidth = 12;
 let startX = 7;
 let startY = 0;
@@ -34,6 +34,7 @@ let tetrisLogo;
 let coordinateArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
 );
+console.log(coordinateArray);
 
 let currentTetromino = [
   [1, 0],
@@ -78,8 +79,8 @@ document.addEventListener("DOMContentLoaded", SetupCanvas);
 function CreateCoordArray() {
   let i = 0,
     j = 0;
-  for (let y = 4; y <= 462; y += 22) {
-    for (let x = 140; x <= 484; x += 22) {
+  for (let y = 4; y <= 506; y += 22) {
+    for (let x = 140; x <= 470; x += 22) {
       coordinateArray[i][j] = new Coordinates(x, y);
       i++;
     }
@@ -348,4 +349,37 @@ function HorizontalCollision() {
     }
   }
   return collison;
+}
+
+function CompletedRows() {
+  let rowsToDelete = 0;
+  let startOfDeletion = 0;
+
+  for (let y = 0; y < gameBoardArrayHeight; y++) {
+    let completed = true;
+    for (let x = 0; x < gameBoardArrayWidth; x++) {
+      let shape = stoppedShapeArray[x][y];
+      if (shape === 0 || typeof shape === "undefined") {
+        completed = false;
+        break;
+      }
+    }
+    if (completed) {
+      if (startOfDeletion === 0) startOfDeletion = y;
+      rowsToDelete++;
+      for (let i = 0; i < gameBoardArrayWidth; i++) {
+        stoppedShapeArray[i][y] = 0;
+        gameBoardArray[i][y] = 0;
+        let coorX = coordinateArray[i][x].x;
+        let coorY = coordinateArray[i][y].y;
+        ctx.fillStyle = "white";
+        ctx.fillRect(coorX, coorY, 20, 20);
+      }
+    }
+  }
+  if (rowsToDelete > 0) {
+    score += 10;
+    ctx.fillStyle = "white";
+    ctx.fillText(score.toString(), 310, 130);
+  }
 }
