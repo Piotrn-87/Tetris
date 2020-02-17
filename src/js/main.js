@@ -24,7 +24,7 @@ let canvas;
 let ctx;
 let gameBoardArrayHeight = 20;
 let gameBoardArrayWidth = 12;
-let startX = 4;
+let startX = 0;
 let startY = 0;
 let score = 0;
 let level = 1;
@@ -138,20 +138,13 @@ function DrawTetrisLogo() {
 
 function DrawTetromino() {
   for (let i = 0; i < currentTetromino.length; i++) {
-    let x = currentTetromino[i][0] + 6;
-    let y = currentTetromino[i][1];
+    let x = currentTetromino[i][0] + startX;
+    let y = currentTetromino[i][1] + startY;
     gameBoardArray[x][y] = 1;
     let coorX = coordinateArray[x][y].x;
     let coorY = coordinateArray[x][y].y;
     ctx.fillStyle = currentTetrominoColor;
     ctx.fillRect(coorX, coorY, 20, 20);
-    console.log("x", x);
-    console.log("y", y);
-    console.log("Cur[i][0]", currentTetromino[i][0]);
-    console.log("Cur[i][1]", currentTetromino[i][1]);
-
-    // console.log("z", z);
-    // console.log("w", w);
   }
 }
 function DeleteTetromino() {
