@@ -18,13 +18,11 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-console.log(`Hello Tetromino!`);
-
 let canvas;
 let ctx;
-let gameBoardArrayHeight = 20;
-let gameBoardArrayWidth = 12;
-let startX = 0;
+let gameBoardArrayHeight = 25;
+let gameBoardArrayWidth = 16;
+let startX = 6;
 let startY = 0;
 let score = 0;
 let level = 1;
@@ -34,17 +32,71 @@ let tetrisLogo;
 let coordinateArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
 );
-console.log(coordinateArray);
+console.log("coordinate", coordinateArray);
+
 let currentTetromino = [
+  // T Shape
   [1, 0],
   [0, 1],
   [1, 1],
   [2, 1]
 ];
 
+//Create shapes
 let tetrominos = [];
+function CreateShapes() {
+  // T Shape
+  tetrominos.push([
+    [1, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1]
+  ]);
+  // I Shape
+  tetrominos.push([
+    [0, 0],
+    [1, 0],
+    [2, 0],
+    [3, 0]
+  ]);
+  // J Shape
+  tetrominos.push([
+    [0, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1]
+  ]);
+  // Square Shape
+  tetrominos.push([
+    [0, 0],
+    [1, 0],
+    [0, 1],
+    [1, 1]
+  ]);
+  // L Shape
+  tetrominos.push([
+    [2, 0],
+    [0, 1],
+    [1, 1],
+    [2, 1]
+  ]);
+  // S Shape
+  tetrominos.push([
+    [1, 0],
+    [2, 0],
+    [0, 1],
+    [1, 1]
+  ]);
+  // Z Shape
+  tetrominos.push([
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [2, 1]
+  ]);
+}
 let shapesColors = [
-  "violet",
+  "lime",
   "cyan",
   "blue",
   "green",
@@ -52,7 +104,7 @@ let shapesColors = [
   "orange",
   "magenta"
 ];
-let currentTetrominoColor;
+let currentTetrominoColor = "coral";
 let gameBoardArray = [...Array(20)].map(e => Array(12).fill(0));
 let stoppedShapeArray = [...Array(20)].map(e => Array(12).fill(0));
 
@@ -107,6 +159,7 @@ function SetupCanvas() {
   ctx.font = "1.3rem Arial";
 
   ctx.fillText("Score", 500, 100);
+
   ctx.fillText(score.toString(), 570, 100);
 
   ctx.fillText("Level", 500, 150);
@@ -181,6 +234,7 @@ function handleKeyPress(key) {
 }
 
 function MoveLeft() {
+  direction = DIRECTION.LEFT;
   DeleteTetromino();
   startX--;
   DrawTetromino();
@@ -207,58 +261,6 @@ function MoveDown() {
 //     MoveDown();
 //   }
 // }, 1000);
-
-function CreateShapes() {
-  // T Shape
-  tetrominos.push([
-    [1, 0],
-    [0, 1],
-    [1, 1],
-    [2, 1]
-  ]);
-  // I Shape
-  tetrominos.push([
-    [0, 0],
-    [1, 0],
-    [2, 0],
-    [3, 0]
-  ]);
-  // J Shape
-  tetrominos.push([
-    [0, 0],
-    [0, 1],
-    [1, 1],
-    [2, 1]
-  ]);
-  // Square Shape
-  tetrominos.push([
-    [0, 0],
-    [1, 0],
-    [0, 1],
-    [1, 1]
-  ]);
-  // L Shape
-  tetrominos.push([
-    [2, 0],
-    [0, 1],
-    [1, 1],
-    [2, 1]
-  ]);
-  // S Shape
-  tetrominos.push([
-    [1, 0],
-    [2, 0],
-    [0, 1],
-    [1, 1]
-  ]);
-  // Z Shape
-  tetrominos.push([
-    [0, 0],
-    [1, 0],
-    [1, 1],
-    [2, 1]
-  ]);
-}
 
 function CreateTetromino() {
   let randomTetromino = Math.floor(Math.random() * tetrominos.length);
@@ -313,6 +315,7 @@ function VerticalCollision() {
         let y = shape[1] + startY;
         stoppedShapeArray[x][y] = currentTetrominoColor;
       }
+
       CompletedRows();
       CreateTetromino();
       direction = DIRECTION.IDLE;
@@ -342,152 +345,71 @@ function HorizontalCollision() {
       break;
     }
   }
-  return collison;
+  return collision;
 }
 
 function CompletedRows() {
-  // 8. Track how many rows to delete and where to start deleting
   let rowsToDelete = 0;
-  let startOfDeletion = 0;
+  let startOfDeletion = 50;
 
-  // Check every row to see if it has been completed
   for (let y = 0; y < gameBoardArrayHeight; y++) {
     let completed = true;
-    // Cycle through x values
     for (let x = 0; x < gameBoardArrayWidth; x++) {
-      // Get values stored in the stopped block array
-      let square = stoppedShapeArray[x][y];
-
-      // Check if nothing is there
-      if (square === 0 || typeof square === "undefined") {
-        // If there is nothing there once then jump out
-        // because the row isn't completed
+      let shape = stoppedShapeArray[x][y];
+      if (shape === 0 || typeof shape === "undefined") {
         completed = false;
         break;
       }
     }
-
-    // If a row has been completed
     if (completed) {
-      // 8. Used to shift down the rows
-      if (startOfDeletion === 0) startOfDeletion = y;
+      if (startOfDeletion === 0) startOfDeletion = y + 4;
       rowsToDelete++;
-
-      // Delete the line everywhere
       for (let i = 0; i < gameBoardArrayWidth; i++) {
-        // Update the arrays by deleting previous squares
         stoppedShapeArray[i][y] = 0;
         gameBoardArray[i][y] = 0;
-        // Look for the x & y values in the lookup table
         let coorX = coordinateArray[i][y].x;
         let coorY = coordinateArray[i][y].y;
-        // Draw the square as white
         ctx.fillStyle = "white";
-        ctx.fillRect(coorX, coorY, 21, 21);
+        ctx.fillRect(coorX, coorY, 20, 20);
       }
     }
   }
   if (rowsToDelete > 0) {
     score += 10;
-    ctx.fillStyle = "white";
-    ctx.fillRect(310, 109, 140, 19);
-    ctx.fillStyle = "black";
-    ctx.fillText(score.toString(), 310, 127);
-    MoveAllRowsDown(rowsToDelete, startOfDeletion);
+    ctx.fillRect(570, 85, 25, 25);
+    ctx.fillStyle = "green";
+    ctx.fillText(score.toString(), 570, 100);
+    MoveRowsDown(rowsToDelete, startOfDeletion);
   }
+
+  console.log("score", score);
 }
 
-// function CompletedRows() {
-//   let rowsToDelete = 0;
-//   let startOfDeletion = 0;
-
-//   for (let y = 0; y < gameBoardArrayHeight; y++) {
-//     let completed = true;
-//     for (let x = 0; x < gameBoardArrayWidth; x++) {
-//       let shape = stoppedShapeArray[x][y];
-//       if (shape === 0 || typeof shape === "undefined") {
-//         completed = false;
-//         break;
-//       }
-//     }
-//     if (completed) {
-//       if (startOfDeletion === 0) startOfDeletion = y;
-//       rowsToDelete++;
-//       for (let i = 0; i < gameBoardArrayWidth; i++) {
-//         stoppedShapeArray[i][y] = 0;
-//         gameBoardArray[i][y] = 0;
-//         let coorX = coordinateArray[i][y].x;
-//         let coorY = coordinateArray[i][y].y;
-//         ctx.fillStyle = "white";
-//         ctx.fillRect(coorX, coorY, 20, 20);
-//       }
-//     }
-//   }
-//   if (rowsToDelete > 0) {
-//     score += 10;
-//     ctx.fillStyle = "white";
-//     ctx.fillRect(310, 110, 140, 20);
-//     ctx.fillStyle = "black";
-//     ctx.fillText(score.toString(), 310, 130);
-//     MoveRowsDown(rowsToDelete, startOfDeletion);
-//   }
-// }
-
-function MoveAllRowsDown(rowsToDelete, startOfDeletion) {
+function MoveRowsDown(rowsToDelete, startOfDeletion) {
   for (var i = startOfDeletion - 1; i >= 0; i--) {
     for (var x = 0; x < gameBoardArrayWidth; x++) {
       var y2 = i + rowsToDelete;
-      var square = stoppedShapeArray[x][i];
-      var nextSquare = stoppedShapeArray[x][y2];
-
-      if (typeof square === "string") {
-        nextSquare = square;
-        gameBoardArray[x][y2] = 1; // Put block into GBA
-        stoppedShapeArray[x][y2] = square; // Draw color into stopped
-
-        // Look for the x & y values in the lookup table
+      var shape = stoppedShapeArray[x][i];
+      var nextShape = stoppedShapeArray[x][y2];
+      if (typeof shape === "string") {
+        nextShape = shape;
+        gameBoardArray[x][y2] = 1;
+        stoppedShapeArray[x][y2] = shape;
         let coorX = coordinateArray[x][y2].x;
         let coorY = coordinateArray[x][y2].y;
-        ctx.fillStyle = nextSquare;
-        ctx.fillRect(coorX, coorY, 21, 21);
-
-        square = 0;
-        gameBoardArray[x][i] = 0; // Clear the spot in GBA
-        stoppedShapeArray[x][i] = 0; // Clear the spot in SSA
+        ctx.fillStyle = nextShape;
+        ctx.fillRect(coorX, coorY, 20, 20);
+        shape = 0;
+        gameBoardArray[x][i] = 0;
+        stoppedShapeArray[x][i] = 0;
         coorX = coordinateArray[x][i].x;
         coorY = coordinateArray[x][i].y;
         ctx.fillStyle = "white";
-        ctx.fillRect(coorX, coorY, 21, 21);
+        ctx.fillRect(coorX, coorY, 20, 20);
       }
     }
   }
 }
-
-// function MoveRowsDown(rowsToDelete, startOfDeletion) {
-//   for (var i = startOfDeletion - 1; i >= 0; i--) {
-//     for (var x = 0; x < gameBoardArrayWidth; x++) {
-//       var y2 = i + rowsToDelete;
-//       var shape = stoppedShapeArray[x][i];
-//       var nextShape = stoppedShapeArray[x][y2];
-//       if (typeof shape === "string") {
-//         nextShape = shape;
-//         gameBoardArray[x][y2] = 1;
-//         stoppedShapeArray[x][y2] = shape;
-//         let coorX = coordinateArray[x][y2].x;
-//         let coorY = coordinateArray[x][y2].y;
-//         ctx.fillStyle = nextSquare;
-//         ctx.fillRect(coorX, coorY, 20, 20);
-//         shape = 0;
-//         gameBoardArray[x][i] = 0;
-//         stoppedShapeArray[x][i] = 0;
-//         coorX = coordinateArray[x][i].x;
-//         coorY = coordinateArray[x][i].y;
-//         ctx.fillStyle = "white";
-//         ctx.fillRect(coorX, coorY, 20, 20);
-//       }
-//     }
-//   }
-// }
 
 function RotateTetromino() {
   let newRotation = new Array();
