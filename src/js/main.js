@@ -378,6 +378,7 @@ function CompletedRows() {
     score += 10;
     ctx.fillRect(570, 85, 25, 25);
     ctx.fillStyle = "green";
+
     ctx.fillText(score.toString(), 570, 100);
     MoveRowsDown(rowsToDelete, startOfDeletion);
   }
