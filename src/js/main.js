@@ -25,9 +25,20 @@ let gameBoardArrayWidth = 16;
 let startX = 6;
 let startY = 0;
 let score = 0;
+let highScore = 0;
 let level = 1;
+let levelUp = 20;
 let winOrLose = "Playing";
 let tetrisLogo;
+let time;
+let speed = 1;
+
+localStorage.setItem("highScore", 0);
+if (localStorage.getItem("highScore")) {
+  highScore = localStorage.getItem("highScore");
+} else {
+  localStorage.setItem("highScore", 0);
+}
 
 let coordinateArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
@@ -256,11 +267,15 @@ function MoveDown() {
   }
 }
 
-// window.setInterval(function() {
-//   if (winOrLose != "Game Over") {
-//     MoveDown();
-//   }
-// }, 1000);
+function setSpeed(speed) {
+  time = window.setInterval(() => {
+    if (winOrLose != "Game over") {
+      MoveDown();
+    }
+  }, 1000 / speed);
+}
+
+// setSpeed(speed);
 
 function CreateTetromino() {
   let randomTetromino = Math.floor(Math.random() * tetrominos.length);
@@ -304,7 +319,7 @@ function VerticalCollision() {
     }
   }
   if (collision) {
-    if (startY <= 2) {
+    if (startY <= 4) {
       winOrLose = "Game Over";
       ctx.fillStyle = "red";
       ctx.fillText(winOrLose, 310, 100);
@@ -319,7 +334,7 @@ function VerticalCollision() {
       CompletedRows();
       CreateTetromino();
       direction = DIRECTION.IDLE;
-      startX = 4;
+      startX = 6;
       startY = 0;
       DrawTetromino();
     }
@@ -349,8 +364,8 @@ function HorizontalCollision() {
 }
 
 function CompletedRows() {
-  let rowsToDelete = 0;
-  let startOfDeletion = 50;
+  var rowsToDelete = 0;
+  let startOfDeletion = 0;
 
   for (let y = 0; y < gameBoardArrayHeight; y++) {
     let completed = true;
@@ -376,14 +391,19 @@ function CompletedRows() {
   }
   if (rowsToDelete > 0) {
     score += 10;
-    ctx.fillRect(570, 85, 25, 25);
+    if (score > localStorage.getItem("highScore")) {
+      localStorage.setItem("highScore", score);
+    }
+    ctx.fillRect(570, 85, 35, 25);
     ctx.fillStyle = "green";
-
     ctx.fillText(score.toString(), 570, 100);
     MoveRowsDown(rowsToDelete, startOfDeletion);
+    if (score % levelUp === 0) {
+      speed = speed + 0.5;
+      clearInterval(time);
+      setSpeed(speed);
+    }
   }
-
-  console.log("score", score);
 }
 
 function MoveRowsDown(rowsToDelete, startOfDeletion) {
