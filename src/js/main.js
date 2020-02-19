@@ -43,7 +43,6 @@ if (localStorage.getItem("highScore")) {
 let coordinateArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
 );
-console.log("coordinate", coordinateArray);
 
 let currentTetromino = [
   // T Shape
@@ -468,3 +467,8 @@ function GetLastSquareX() {
   }
   return lastX;
 }
+
+function keyCode(e) {
+  console.log(e.keyCode);
+}
+window.addEventListener("keydown", keyCode);
