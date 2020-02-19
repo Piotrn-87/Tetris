@@ -394,12 +394,16 @@ function CompletedRows() {
     if (score > localStorage.getItem("highScore")) {
       localStorage.setItem("highScore", score);
     }
-    ctx.fillRect(570, 85, 35, 25);
+    ctx.fillRect(570, 85, 40, 25);
     ctx.fillStyle = "green";
     ctx.fillText(score.toString(), 570, 100);
     MoveRowsDown(rowsToDelete, startOfDeletion);
     if (score % levelUp === 0) {
-      speed = speed + 0.5;
+      speed = speed + 0.2;
+      level++;
+      ctx.fillRect(560, 130, 40, 25);
+      ctx.fillStyle = "green";
+      ctx.fillText(level.toString(), 570, 150);
       clearInterval(time);
       setSpeed(speed);
     }
