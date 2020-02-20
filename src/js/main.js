@@ -22,19 +22,20 @@ let canvas;
 let ctx;
 let gameBoardArrayHeight = 25;
 let gameBoardArrayWidth = 16;
-let startX = 6;
-let startY = 0;
-let score = 0;
 let highScore = 0;
 let level = 1;
-let levelUp = 20;
-let winOrLose = "Playing";
+const levelUp = 20;
+let pause = false;
+let score = 0;
+let speed = 1;
+let startX = 6;
+let startY = 0;
 let tetrisLogo;
 let time;
-let speed = 1;
+let winOrLose = "Playing";
 
 localStorage.setItem("highScore", 0);
-if (localStorage.getItem("highScore")) {
+if (localStorage.getItem(highScore)) {
   highScore = localStorage.getItem("highScore");
 } else {
   localStorage.setItem("highScore", 0);
@@ -123,6 +124,14 @@ let DIRECTION = {
   DOWN: 1,
   LEFT: 2,
   RIGHT: 3
+};
+
+let KEYS = {
+  LEFT: 65,
+  IDLE: 87,
+  RIGHT: 68,
+  DOWN: 83,
+  PAUSE: 80
 };
 
 let direction;
@@ -225,40 +234,39 @@ function DeleteTetromino() {
 document.addEventListener("keydown", handleKeyPress);
 
 function handleKeyPress(key) {
-  if (key.keyCode === 65) {
+  if (key.keyCode === KEYS.LEFT && !pause) {
     direction = DIRECTION.LEFT;
     if (!HittingTheWall()) {
       MoveLeft();
     }
-  } else if (key.keyCode === 68) {
+  } else if (key.keyCode === KEYS.RIGHT && !pause) {
     direction = DIRECTION.RIGHT;
     if (!HittingTheWall()) {
       MoveRight();
     }
-  } else if (key.keyCode === 83) {
+  } else if (key.keyCode === KEYS.DOWN && !pause) {
     direction = DIRECTION.DOWN;
     MoveDown();
   } else if (key.keyCode === 32) {
     RotateTetromino();
+  } else if (key.keyCode === KEYS.PAUSE) {
+    pause = !pause;
   }
 }
 
 function MoveLeft() {
-  direction = DIRECTION.LEFT;
   DeleteTetromino();
   startX--;
   DrawTetromino();
 }
 
 function MoveRight() {
-  direction = DIRECTION.RIGHT;
   DeleteTetromino();
   startX++;
   DrawTetromino();
 }
 
 function MoveDown() {
-  direction = DIRECTION.DOWN;
   if (!VerticalCollision()) {
     DeleteTetromino();
     startY++;
@@ -268,8 +276,10 @@ function MoveDown() {
 
 function setSpeed(speed) {
   time = window.setInterval(() => {
-    if (winOrLose != "Game over") {
-      MoveDown();
+    if (!pause) {
+      if (winOrLose != "Game over") {
+        MoveDown();
+      }
     }
   }, 1000 / speed);
 }
@@ -390,8 +400,8 @@ function CompletedRows() {
   }
   if (rowsToDelete > 0) {
     score += 10;
-    if (score > localStorage.getItem("highScore")) {
-      localStorage.setItem("highScore", score);
+    if (score > localStorage.getItem(highScore)) {
+      localStorage.setItem(highScore, score);
     }
     ctx.fillRect(570, 85, 40, 25);
     ctx.fillStyle = "green";
@@ -410,11 +420,11 @@ function CompletedRows() {
 }
 
 function MoveRowsDown(rowsToDelete, startOfDeletion) {
-  for (var i = startOfDeletion - 1; i >= 0; i--) {
-    for (var x = 0; x < gameBoardArrayWidth; x++) {
-      var y2 = i + rowsToDelete;
-      var shape = stoppedShapeArray[x][i];
-      var nextShape = stoppedShapeArray[x][y2];
+  for (let i = startOfDeletion - 1; i >= 0; i--) {
+    for (let x = 0; x < gameBoardArrayWidth; x++) {
+      let y2 = i + rowsToDelete;
+      let shape = stoppedShapeArray[x][i];
+      let nextShape = stoppedShapeArray[x][y2];
       if (typeof shape === "string") {
         nextShape = shape;
         gameBoardArray[x][y2] = 1;
@@ -469,7 +479,7 @@ function GetLastSquareX() {
 }
 
 // Number of key
-// function keyCode(e) {
-//   console.log(e.keyCode);
-// }
-// window.addEventListener("keydown", keyCode);
+function keyCode(e) {
+  console.log(e.keyCode);
+}
+window.addEventListener("keydown", keyCode);
