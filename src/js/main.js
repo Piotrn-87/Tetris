@@ -468,7 +468,8 @@ function GetLastSquareX() {
   return lastX;
 }
 
-function keyCode(e) {
-  console.log(e.keyCode);
-}
-window.addEventListener("keydown", keyCode);
+// Number of key
+// function keyCode(e) {
+//   console.log(e.keyCode);
+// }
+// window.addEventListener("keydown", keyCode);
