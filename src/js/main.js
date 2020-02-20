@@ -44,6 +44,12 @@ if (localStorage.getItem(highScore)) {
 let coordinateArray = [...Array(gameBoardArrayHeight)].map(e =>
   Array(gameBoardArrayWidth).fill(0)
 );
+let gameBoardArray = [...Array(gameBoardArrayHeight)].map(e =>
+  Array(gameBoardArrayWidth).fill(0)
+);
+let stoppedShapeArray = [...Array(gameBoardArrayHeight)].map(e =>
+  Array(gameBoardArrayWidth).fill(0)
+);
 
 let currentTetromino = [
   // T Shape
@@ -116,8 +122,6 @@ let shapesColors = [
   "magenta"
 ];
 let currentTetrominoColor = "coral";
-let gameBoardArray = [...Array(20)].map(e => Array(12).fill(0));
-let stoppedShapeArray = [...Array(20)].map(e => Array(12).fill(0));
 
 let DIRECTION = {
   IDLE: 0,
@@ -380,6 +384,7 @@ function CompletedRows() {
     let completed = true;
     for (let x = 0; x < gameBoardArrayWidth; x++) {
       let shape = stoppedShapeArray[x][y];
+      console.log("shape", shape);
       if (shape === 0 || typeof shape === "undefined") {
         completed = false;
         break;
@@ -479,7 +484,7 @@ function GetLastSquareX() {
 }
 
 // Number of key
-function keyCode(e) {
-  console.log(e.keyCode);
-}
-window.addEventListener("keydown", keyCode);
+// function keyCode(e) {
+//   console.log(e.keyCode);
+// }
+// window.addEventListener("keydown", keyCode);
