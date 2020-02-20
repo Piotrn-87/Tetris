@@ -195,7 +195,8 @@ function SetupCanvas() {
   ctx.fillText("A: Move left", 500, 350);
   ctx.fillText("D: Move right", 500, 380);
   ctx.fillText("S: Move down", 500, 410);
-  ctx.fillText("Space: rotate", 500, 440);
+  ctx.fillText("P: Pasue", 500, 440);
+  ctx.fillText("Space: Rotate", 500, 470);
 
   document.addEventListener("keydown", handleKeyPress);
 
@@ -249,7 +250,6 @@ function handleKeyPress(key) {
       MoveRight();
     }
   } else if (key.keyCode === KEYS.DOWN && !pause) {
-    direction = DIRECTION.DOWN;
     MoveDown();
   } else if (key.keyCode === 32) {
     RotateTetromino();
@@ -259,18 +259,21 @@ function handleKeyPress(key) {
 }
 
 function MoveLeft() {
+  direction = DIRECTION.LEFT;
   DeleteTetromino();
   startX--;
   DrawTetromino();
 }
 
 function MoveRight() {
+  direction = DIRECTION.RIGHT;
   DeleteTetromino();
   startX++;
   DrawTetromino();
 }
 
 function MoveDown() {
+  direction = DIRECTION.DOWN;
   if (!VerticalCollision()) {
     DeleteTetromino();
     startY++;
@@ -288,7 +291,7 @@ function setSpeed(speed) {
   }, 1000 / speed);
 }
 
-// setSpeed(speed);
+setSpeed(speed);
 
 function CreateTetromino() {
   let randomTetromino = Math.floor(Math.random() * tetrominos.length);
@@ -405,8 +408,8 @@ function CompletedRows() {
   }
   if (rowsToDelete > 0) {
     score += 10;
-    if (score > localStorage.getItem(highScore)) {
-      localStorage.setItem(highScore, score);
+    if (score > localStorage.getItem("highScore")) {
+      localStorage.setItem("highScore", score);
     }
     ctx.fillRect(570, 85, 40, 25);
     ctx.fillStyle = "green";
