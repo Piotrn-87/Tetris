@@ -179,20 +179,21 @@ function SetupCanvas() {
   tetrisLogo.onload = DrawTetrisLogo;
   tetrisLogo.src = "assets/img/indeks.jpg";
 
-  ctx.fillStyle = "green";
   ctx.font = "1.3rem Arial";
 
+  ctx.fillStyle = "red";
   ctx.fillText("Score", 500, 100);
-
   ctx.fillText(score.toString(), 570, 100);
 
+  ctx.fillStyle = "orange";
   ctx.fillText("Level", 500, 150);
   ctx.fillText(level.toString(), 570, 150);
 
+  ctx.fillStyle = "green";
   ctx.fillText(winOrLose, 500, 200);
 
+  ctx.fillStyle = "#0066cc";
   ctx.fillText("CONTROLS", 500, 320);
-
   ctx.fillText("A: Move left", 500, 350);
   ctx.fillText("D: Move right", 500, 380);
   ctx.fillText("S: Move down", 500, 410);
@@ -252,7 +253,7 @@ function handleKeyPress(key) {
     } else if (key.keyCode === KEYS.PAUSE) {
       pause = !pause;
       if (pause === true) {
-        ctx.fillStyle = "magenta";
+        ctx.fillStyle = "#9900cc";
         ctx.fillText("PAUSE", 500, 250);
       } else {
         ctx.fillStyle = "white";
