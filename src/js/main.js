@@ -180,7 +180,6 @@ function SetupCanvas() {
   tetrisLogo.src = "assets/img/indeks.jpg";
 
   ctx.font = "1.3rem Arial";
-
   ctx.fillStyle = "red";
   ctx.fillText("Score", 500, 100);
   ctx.fillText(score.toString(), 570, 100);
@@ -213,6 +212,13 @@ function DrawTetrisLogo() {
   ctx.drawImage(tetrisLogo, 0, 100, 130, 70);
   ctx.drawImage(tetrisLogo, 0, 150, 130, 70);
   ctx.drawImage(tetrisLogo, 0, 200, 130, 70);
+  ctx.drawImage(tetrisLogo, 0, 250, 130, 70);
+}
+
+function CreateTetromino() {
+  let randomTetromino = Math.floor(Math.random() * tetrominos.length);
+  currentTetromino = tetrominos[randomTetromino];
+  currentTetrominoColor = shapesColors[randomTetromino];
 }
 
 function DrawTetromino() {
@@ -226,6 +232,7 @@ function DrawTetromino() {
     ctx.fillRect(coorX, coorY, 20, 20);
   }
 }
+
 function DeleteTetromino() {
   for (let i = 0; i < currentTetromino.length; i++) {
     let x = currentTetromino[i][0] + startX;
@@ -294,19 +301,12 @@ function setSpeed(speed) {
     if (!pause) {
       if (winOrLose != "Game Over") {
         MoveDown();
-        console.log(winOrLose);
       }
     }
   }, 1000 / speed);
 }
 
 setSpeed(speed);
-
-function CreateTetromino() {
-  let randomTetromino = Math.floor(Math.random() * tetrominos.length);
-  currentTetromino = tetrominos[randomTetromino];
-  currentTetrominoColor = shapesColors[randomTetromino];
-}
 
 function HittingTheWall() {
   for (let i = 0; i < currentTetromino.length; i++) {
@@ -418,7 +418,18 @@ function CompletedRows() {
     }
   }
   if (rowsToDelete > 0) {
-    score += 10;
+    if (rowsToDelete === 2) {
+      score += 20;
+    }
+    if (rowsToDelete === 3) {
+      score += 30;
+    }
+    if (rowsToDelete === 4) {
+      score += 40;
+    } else {
+      score += 10;
+    }
+
     if (score > localStorage.getItem("highScore")) {
       localStorage.setItem("highScore", score);
     }
