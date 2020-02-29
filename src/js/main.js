@@ -357,7 +357,6 @@ function VerticalCollision() {
         let y = shape[1] + startY;
         stoppedShapeArray[x][y] = currentTetrominoColor;
       }
-
       CompletedRows();
       CreateTetromino();
       direction = DIRECTION.IDLE;
@@ -398,7 +397,6 @@ function CompletedRows() {
     let completed = true;
     for (let x = 0; x < gameBoardArrayWidth; x++) {
       let shape = stoppedShapeArray[x][y];
-      console.log("shape", shape);
       if (shape === 0 || typeof shape === "undefined") {
         completed = false;
         break;
@@ -418,6 +416,9 @@ function CompletedRows() {
     }
   }
   if (rowsToDelete > 0) {
+    if (rowsToDelete === 1) {
+      score += 10;
+    }
     if (rowsToDelete === 2) {
       score += 20;
     }
@@ -426,8 +427,6 @@ function CompletedRows() {
     }
     if (rowsToDelete === 4) {
       score += 40;
-    } else {
-      score += 10;
     }
 
     if (score > localStorage.getItem("highScore")) {
