@@ -1,4 +1,4 @@
-# gulp-starter
+# gTetris in JS
 Iconik tile-matching puzzle video game. Live: https://piotrn-87.github.io/Tetris/
 
 ```bash
