@@ -1,5 +1,5 @@
 # Tetris in JS
-Iconik tile-matching puzzle video game. Live: https://piotrn-87.github.io/Tetris/
+Iconik tile-matching puzzle video game. Tetris Live: https://piotrn-87.github.io/Tetris/
 
 ```bash
 # Install global cli
